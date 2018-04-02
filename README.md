@@ -3,6 +3,7 @@
 # Wildfire
 
 [![Build Status](https://travis-ci.org/floscha/wildfire.svg?branch=master)](https://travis-ci.org/floscha/wildfire)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 *Wildfire is a library to automatically generate HTTP services for arbitrary Python classes, inspired by Google's [Python Fire](https://opensource.google.com/projects/python-fire) which generates command line applications instead.*
 
