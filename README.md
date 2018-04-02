@@ -2,6 +2,7 @@
 
 # Wildfire
 
+[![PyPI Version](https://img.shields.io/pypi/v/wildfire.svg)](https://pypi.python.org/pypi/wildfire)
 [![Build Status](https://travis-ci.org/floscha/wildfire.svg?branch=master)](https://travis-ci.org/floscha/wildfire)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
