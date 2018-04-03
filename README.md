@@ -2,6 +2,7 @@
 
 # Wildfire
 
+[![Code Health](https://landscape.io/github/floscha/wildfire/master/landscape.svg?style=flat)](https://landscape.io/github/floscha/wildfire/master)
 [![Coverage Status](https://coveralls.io/repos/github/floscha/wildfire/badge.svg?branch=master)](https://coveralls.io/github/floscha/wildfire?branch=master)
 [![Build Status](https://travis-ci.org/floscha/wildfire.svg?branch=master)](https://travis-ci.org/floscha/wildfire)
 [![PyPI Version](https://img.shields.io/pypi/v/wildfire.svg)](https://pypi.python.org/pypi/wildfire)
