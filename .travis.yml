@@ -6,5 +6,6 @@ install:
   - pip install pytest coveralls
 script:
   - pytest
+  - coverage run wildfire
 after_success:
   - coveralls
