@@ -3,6 +3,8 @@ python:
   - "3.6"
 install:
   - pip install .
-  - pip install pytest
+  - pip install pytest coveralls
 script:
   - pytest
+after_success:
+  - coveralls
