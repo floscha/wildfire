@@ -1,6 +1,8 @@
 import inspect
 import unittest
 
+import flask
+
 import wildfire
 
 
@@ -30,6 +32,16 @@ class CoreTest(unittest.TestCase):
         self_param = inspect.signature(partial_method).parameters['self']
         self_param_value = self_param.default
         self.assertIs(test_object, self_param_value)
+
+    def test_add_method_route_to_flask(self):
+        def test_method():
+            pass
+        # test_method.__name__ = 'test_method'
+        app = flask.Flask(__name__)
+
+        wildfire.core.add_method_route_to_flask(test_method, app)
+
+        self.assertIn('test_method', app.__dict__)
 
 
 if __name__ == '__main__':
