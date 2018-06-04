@@ -2,9 +2,9 @@
 
 # Wildfire
 
-[![Code Health](https://landscape.io/github/floscha/wildfire/master/landscape.svg?style=flat)](https://landscape.io/github/floscha/wildfire/master)
-[![Coverage Status](https://coveralls.io/repos/github/floscha/wildfire/badge.svg?branch=master)](https://coveralls.io/github/floscha/wildfire?branch=master)
 [![Build Status](https://travis-ci.org/floscha/wildfire.svg?branch=master)](https://travis-ci.org/floscha/wildfire)
+[![Coverage Status](https://coveralls.io/repos/github/floscha/wildfire/badge.svg?branch=master)](https://coveralls.io/github/floscha/wildfire?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ebf01a8a4dc343218f3c467bffb32721)](https://www.codacy.com/app/floscha/wildfire?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=floscha/wildfire&amp;utm_campaign=Badge_Grade)
 [![PyPI Version](https://img.shields.io/pypi/v/wildfire.svg)](https://pypi.python.org/pypi/wildfire)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
