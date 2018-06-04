@@ -5,7 +5,7 @@ from types import FunctionType
 from flask import Flask, request, jsonify
 
 
-def Wildfire(obj, host='0.0.0.0'):
+def Wildfire(obj, host='0.0.0.0', port=5000):
     """Wrap a Python object as an HTTP service and run that service.
 
     Args:
@@ -29,7 +29,7 @@ def Wildfire(obj, host='0.0.0.0'):
             add_method_route_to_flask(method, app)
 
     # Start the server.
-    app.run(host=host)
+    app.run(host=host, port=port)
 
 
 def get_methods_from_object(obj):
