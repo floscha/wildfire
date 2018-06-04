@@ -96,11 +96,17 @@ def build_route(method):
         # Extract fields from JSON request.
         json_args = request.get_json()
 
-        # Check is request contains all arguments of the function.
+        # Check if the JSON payload contains all arguments of the function.
         # If not, exit with 422 (Unprocessable Entity) response.
-        func_args = inspect.signature(method).parameters
-        if not all(arg in json_args for arg in func_args if arg != 'self'):
-            return f"Arguments for method {method.__name__!r} missing", 422
+        # Valid exceptions are the 'self' and default parameters.
+        func_args = inspect.signature(method).parameters.items()
+        for arg_name, arg in func_args:
+            if arg_name not in json_args:
+                if arg_name == 'self':
+                    continue
+                if not isinstance(arg.default, inspect._empty):
+                    continue
+                return f"Arguments for method {method.__name__!r} missing", 422
 
         # Call function with parameters from JSON request.
         res = method(**json_args)
