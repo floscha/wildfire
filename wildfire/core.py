@@ -1,5 +1,6 @@
 from functools import partial
 import inspect
+from types import FunctionType
 
 from flask import Flask, request, jsonify
 
@@ -14,14 +15,18 @@ def Wildfire(obj, host='0.0.0.0'):
     # Initialize Flask server.
     app = Flask(obj.__name__)
 
-    # Get all methods from the object.
-    methods = get_methods_from_object(obj)
-    # Create partials objects where 'self' is set to the object.
-    partial_methods = [build_partial_method(m, obj) for m in methods]
-
-    # Add routing method(s) to Flask app.
-    for method in partial_methods:
-        add_method_route_to_flask(method, app)
+    # Check wether the object is a function or a class type.
+    if isinstance(obj, FunctionType):
+        # If the object is a function, its route can be created right away.
+        add_method_route_to_flask(obj, app)
+    else:
+        # For a class, extract all its methods first.
+        methods = get_methods_from_object(obj)
+        # Create partials methods where 'self' is set to the object.
+        partial_methods = [build_partial_method(m, obj) for m in methods]
+        # Add routing method(s) to Flask app.
+        for method in partial_methods:
+            add_method_route_to_flask(method, app)
 
     # Start the server.
     app.run(host=host)
