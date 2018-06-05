@@ -55,6 +55,23 @@ class CoreTest(unittest.TestCase):
 
         self.assertIn('test_method', app.__dict__)
 
+    def test_build_route(self):
+        def test_method(test_string):
+            return test_string
+
+        app = flask.Flask(__name__)
+
+        test_message = dict(data=json.dumps({'test_string': 'test string'}),
+                            content_type='application/json')
+        with app.test_request_context('/', **test_message):
+            route_method = wildfire.core.build_route(test_method)
+
+            response = route_method()
+
+        json_response = json.loads(response.data)
+
+        self.assertTrue('test string' == json_response)
+
 
 if __name__ == '__main__':
     unittest.main()
