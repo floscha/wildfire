@@ -1,9 +1,11 @@
 import inspect
+import json
 import unittest
 
 import flask
 
 import wildfire
+from wildfire.core import _create_wildfire_app
 
 
 class Calculator(object):
@@ -15,6 +17,17 @@ class Calculator(object):
 
 class CoreTest(unittest.TestCase):
     """Test suite for all functionality of the wildfire.core module."""
+
+    def test_wildfire_with_calculator(self):
+        app = _create_wildfire_app(Calculator)
+        client = app.test_client()
+
+        response = client.post('/double',
+                               data=json.dumps({'number': 2}),
+                               content_type='application/json')
+        json_response = json.loads(response.data)
+
+        self.assertIs(4, json_response)
 
     def test_method_names_from_object(self):
         methods = wildfire.core.get_methods_from_object(Calculator)
