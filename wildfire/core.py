@@ -12,6 +12,19 @@ def Wildfire(obj, host='0.0.0.0', port=5000):
         obj (object): The object to be wrapped.
         host (str): An optional hostname for the service to listen on.
     """
+    # Create a Flask app with routes for the object's methods.
+    app = _create_wildfire_app(obj)
+
+    # Start the server.
+    app.run(host=host, port=port)
+
+
+def _create_wildfire_app(obj):
+    """Create a Flask app with routes for the object's methods.
+
+    Args:
+        obj (object): The object to be wrapped.
+    """
     # Initialize Flask server.
     app = Flask(obj.__name__)
 
@@ -28,8 +41,7 @@ def Wildfire(obj, host='0.0.0.0', port=5000):
         for method in partial_methods:
             add_method_route_to_flask(method, app)
 
-    # Start the server.
-    app.run(host=host, port=port)
+    return app
 
 
 def get_methods_from_object(obj):
