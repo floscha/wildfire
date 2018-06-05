@@ -48,7 +48,7 @@ class CoreTest(unittest.TestCase):
     def test_add_method_route_to_flask(self):
         def test_method():
             pass
-        # test_method.__name__ = 'test_method'
+
         app = flask.Flask(__name__)
 
         wildfire.core.add_method_route_to_flask(test_method, app)
