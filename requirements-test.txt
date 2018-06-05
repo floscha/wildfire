@@ -1,3 +1,5 @@
 coveralls
+Flask-Testing
 pytest
 pytest-cov
+requests
