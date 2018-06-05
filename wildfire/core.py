@@ -11,6 +11,7 @@ def Wildfire(obj, host='0.0.0.0', port=5000):
     Args:
         obj (object): The object to be wrapped.
         host (str): An optional hostname for the service to listen on.
+        post (int): An optional port number where the service can be reached.
     """
     # Create a Flask app with routes for the object's methods.
     app = _create_wildfire_app(obj)
