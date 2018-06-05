@@ -76,7 +76,8 @@ class CoreTest(unittest.TestCase):
 
 
 class FlaskLiveTest(LiveServerTestCase):
-    def create_app(self):
+    @staticmethod
+    def create_app():
         def test_method():
             return 'test_string'
 
