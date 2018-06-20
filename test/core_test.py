@@ -5,15 +5,9 @@ import unittest
 import flask
 from flask.ext.testing import LiveServerTestCase
 import requests
-
 import wildfire
 
-
-class Calculator(object):
-    """A simple calculator class."""
-
-    def double(self, number):
-        return 2 * number
+from _test_utils import Calculator
 
 
 class CoreTest(unittest.TestCase):
