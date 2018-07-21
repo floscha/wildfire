@@ -1,48 +1,47 @@
 from functools import partial
 import inspect
+import json
 from types import FunctionType
 
-from flask import Flask, request, jsonify
+import falcon
 
 
-def Wildfire(obj, host='0.0.0.0', port=5000):
+def Wildfire(obj):
     """Wrap a Python object as an HTTP service and run that service.
 
     Args:
         obj (object): The object to be wrapped.
-        host (str): An optional hostname for the service to listen on.
-        post (int): An optional port number where the service can be reached.
     """
-    # Create a Flask app with routes for the object's methods.
-    app = _create_wildfire_app(obj)
+    # Create an API object with routes for the object's methods.
+    api = _create_api(obj)
 
-    # Start the server.
-    app.run(host=host, port=port)
+    return api
 
 
-def _create_wildfire_app(obj):
-    """Create a Flask app with routes for the object's methods.
+def _create_api(obj):
+    """Create a Falcon API with routes for the object's methods.
 
     Args:
         obj (object): The object to be wrapped.
     """
-    # Initialize Flask server.
-    app = Flask(obj.__name__)
+    # Initialize Falcon API.
+    api = falcon.API()
 
     # Check wether the object is a function or a class type.
     if isinstance(obj, FunctionType):
         # If the object is a function, its route can be created right away.
-        add_method_route_to_flask(obj, app)
+        add_method_route_to_api(obj, api)
     else:
         # For a class, extract all its methods first.
         methods = get_methods_from_object(obj)
         # Create partials methods where 'self' is set to the object.
-        partial_methods = [build_partial_method(m, obj) for m in methods]
-        # Add routing method(s) to Flask app.
-        for method in partial_methods:
-            add_method_route_to_flask(method, app)
+        if isinstance(obj, type):
+            methods = [build_partial_method(m, obj) for m in methods]
+        # Add routing method(s) to API.
+        for method in methods:
+            add_method_route_to_api(method, api)
 
-    return app
+    return api
 
 
 def get_methods_from_object(obj):
@@ -72,6 +71,11 @@ def build_partial_method(method, obj):
     Returns:
         A functools.partial object.
     """
+    # If the method has no 'self' parameter, then no partial method is needed.
+    method_parameters = inspect.signature(method).parameters.keys()
+    if 'self' not in method_parameters:
+        return method
+
     method_name = method.__name__
 
     # Create partial method and set 'self' parameter and name property.
@@ -81,51 +85,46 @@ def build_partial_method(method, obj):
     return partial_method
 
 
-def add_method_route_to_flask(method, app):
-    """Wrap a partial method into a Flask routing function.
+def add_method_route_to_api(method, api):
+    """Wrap a partial method into a routing function.
 
     Args:
         method (functools.partial): Partial method to wrap. Needs to have a
             value for '__name__'.
-        app (flask.Flask): Flask app to add to routing method to.
+        api (falcon.API): Falcon API to add to routing method to.
     """
     method_name = method.__name__
-
-    # Add a new route for the method to the Flask app.
-    route_decorator = app.route(f'/{method_name}', methods=['POST'])
-    route = route_decorator(build_route(method))
-    app.__dict__[method_name] = route
+    resource = build_resource_from_method(method)
+    api.add_route(f'/{method_name}', resource)
 
 
-def build_route(method):
-    """Wrap a method in a Flask route.
+def build_resource_from_method(method):
+    class QuoteResource:
+        def on_post(self, req, resp):
+            # Extract fields from JSON request.
+            json_args = json.load(req.stream)
 
-    Args:
-        method (callable): The method to be wrapped.
-    Returns:
-        A Flask routing method.
-    """
-    def method_wrapper(*args, **kwargs):
-        # Extract fields from JSON request.
-        json_args = request.get_json()
+            # Check if the JSON payload contains all arguments of the function.
+            # If not, exit with 422 (Unprocessable Entity) response.
+            # Valid exceptions are the 'self' and default parameters.
+            # TODO Handle parameters that do not exist in the method signature.
+            func_args = inspect.signature(method).parameters.items()
+            for arg_name, arg in func_args:
+                if arg_name not in json_args:
+                    if arg_name == 'self':
+                        continue
+                    if not isinstance(arg.default, inspect._empty):
+                        continue
+                    resp.body = (f"Arguments for method {method.__name__!r}"
+                                 + " missing")
+                    resp.status = falcon.HTTP_422
+                    return
 
-        # Check if the JSON payload contains all arguments of the function.
-        # If not, exit with 422 (Unprocessable Entity) response.
-        # Valid exceptions are the 'self' and default parameters.
-        func_args = inspect.signature(method).parameters.items()
-        for arg_name, arg in func_args:
-            if arg_name not in json_args:
-                if arg_name == 'self':
-                    continue
-                if not isinstance(arg.default, inspect._empty):
-                    continue
-                return f"Arguments for method {method.__name__!r} missing", 422
+            # Call function with parameters from JSON request.
+            res = method(**json_args)
 
-        # Call function with parameters from JSON request.
-        res = method(**json_args)
+            resp.media = res
+            resp.status = falcon.HTTP_200
 
-        # Marshal JSON object from result.
-        json_response = jsonify(res)
-
-        return json_response
-    return method_wrapper
+    initialized_resource = QuoteResource()
+    return initialized_resource
