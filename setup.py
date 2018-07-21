@@ -1,9 +1,12 @@
 from setuptools import setup
 
 
-VERSION = '0.11'
+VERSION = '0.12'
 
-requirements = list(open('requirements.txt', 'r').readlines())
+requirements = [
+    'falcon==1.4.1',
+    'gunicorn==19.9.0'
+]
 
 setup(
     name='wildfire',
