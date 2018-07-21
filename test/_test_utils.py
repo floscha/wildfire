@@ -3,3 +3,6 @@ class Calculator(object):
 
     def double(self, number):
         return 2 * number
+
+    def half(self, number):
+        return 2 / number

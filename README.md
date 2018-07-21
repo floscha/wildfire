@@ -26,6 +26,7 @@ Other Python objects like functions, modules, objects, dictionaries, lists, tupl
 Here's an example of calling Wildfire on a class.
 
 ```python
+# service.py
 import wildfire
 
 class Calculator(object):
@@ -34,10 +35,14 @@ class Calculator(object):
   def double(self, number):
     return 2 * number
 
-if __name__ == '__main__':
-  wildfire.Wildfire(Calculator)
+api = wildfire.Wildfire(Calculator)
 ```
 (We use the [example](https://github.com/google/python-fire#basic-usage) from Python Fire to show the similarity of both APIs.)
+
+Run the server script using [Gunicorn](http://gunicorn.org/):
+```bash
+$ gunicorn service:api
+```
 
 Then, from the command line, you can query the web service like so:
 
