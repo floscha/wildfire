@@ -6,20 +6,14 @@ from types import FunctionType
 import falcon
 
 
-def Wildfire(obj, host='0.0.0.0', port=5000):
+def Wildfire(obj):
     """Wrap a Python object as an HTTP service and run that service.
 
     Args:
         obj (object): The object to be wrapped.
-        host (str): An optional hostname for the service to listen on.
-        post (int): An optional port number where the service can be reached.
     """
     # Create an API object with routes for the object's methods.
     api = _create_api(obj)
-
-    # Start the server.
-    # app.run(host=host, port=port)
-    # run "gunicorn sample:api"
 
     return api
 
