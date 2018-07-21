@@ -35,9 +35,10 @@ def _create_api(obj):
         # For a class, extract all its methods first.
         methods = get_methods_from_object(obj)
         # Create partials methods where 'self' is set to the object.
-        partial_methods = [build_partial_method(m, obj) for m in methods]
+        if isinstance(obj, type):
+            methods = [build_partial_method(m, obj) for m in methods]
         # Add routing method(s) to API.
-        for method in partial_methods:
+        for method in methods:
             add_method_route_to_api(method, api)
 
     return api
@@ -70,6 +71,11 @@ def build_partial_method(method, obj):
     Returns:
         A functools.partial object.
     """
+    # If the method has no 'self' parameter, then no partial method is needed.
+    method_parameters = inspect.signature(method).parameters.keys()
+    if 'self' not in method_parameters:
+        return method
+
     method_name = method.__name__
 
     # Create partial method and set 'self' parameter and name property.
