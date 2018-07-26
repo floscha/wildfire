@@ -1,3 +1,4 @@
+import falcon
 from falcon import testing
 import wildfire
 
@@ -14,3 +15,16 @@ class FalconTest(testing.TestCase):
         json_response = response.json
 
         self.assertIs(4, json_response)
+
+
+    def test_add_method_route_to_api(self):
+        def test_method():
+            pass
+        exptected_uri = '/test_method'
+
+        api = falcon.API()
+
+        wildfire.core.add_method_route_to_api(test_method, api)
+
+        api_uris = [route.uri_template for route in api._router._roots]
+        self.assertIn(exptected_uri, api_uris)
