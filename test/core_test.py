@@ -1,8 +1,6 @@
 import inspect
-import json
 import unittest
 
-import requests
 import wildfire
 
 from _test_utils import Calculator
