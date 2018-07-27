@@ -99,7 +99,7 @@ def add_method_route_to_api(method, api):
 
 
 def build_resource_from_method(method):
-    class QuoteResource:
+    class MethodResource:
         def on_post(self, req, resp):
             # Extract fields from JSON request.
             json_args = json.load(req.stream)
@@ -126,5 +126,5 @@ def build_resource_from_method(method):
             resp.media = res
             resp.status = falcon.HTTP_200
 
-    initialized_resource = QuoteResource()
+    initialized_resource = MethodResource()
     return initialized_resource
