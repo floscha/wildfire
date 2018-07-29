@@ -7,6 +7,14 @@ from _test_utils import Calculator
 
 class FalconTest(testing.TestCase):
 
+    def test_root_resource(self):
+        self.app = wildfire.core._create_api(None)
+
+        response = self.simulate_get('/')
+        response_text = response.text
+
+        self.assertEqual('This API is powered by Wildfire', response_text)
+
     def test_wildfire_with_calculator(self):
         self.app = wildfire.core._create_api(Calculator)
 

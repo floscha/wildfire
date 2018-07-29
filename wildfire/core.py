@@ -27,6 +27,9 @@ def _create_api(obj):
     # Initialize Falcon API.
     api = falcon.API()
 
+    # Add route for URI root.
+    add_root_resource(api)
+
     # Check wether the object is a function or a class type.
     if isinstance(obj, FunctionType):
         # If the object is a function, its route can be created right away.
@@ -128,3 +131,12 @@ def build_resource_from_method(method):
 
     initialized_resource = MethodResource()
     return initialized_resource
+
+
+def add_root_resource(api):
+    """Add a GET resource to the root URI."""
+    class RootResource:
+        def on_get(self, req, resp):
+            resp.body = 'This API is powered by Wildfire'
+
+    api.add_route('/', RootResource())
