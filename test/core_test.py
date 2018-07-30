@@ -15,6 +15,18 @@ class CoreTest(unittest.TestCase):
 
         self.assertListEqual(['double', 'half'], method_names)
 
+
+    def test_included_method_names_from_object(self):
+        included_method_names = ['double']
+        methods = wildfire.core.get_methods_from_object(
+            Calculator,
+            included_method_names
+        )
+        method_names = [m.__name__ for m in methods]
+
+        self.assertListEqual(['double'], method_names)
+
+
     def test_build_partial_method(self):
         def test_method(self): pass
         test_object = object()
