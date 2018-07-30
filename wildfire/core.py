@@ -6,7 +6,7 @@ from types import FunctionType
 import falcon
 
 
-def Wildfire(obj, include=None):
+def Wildfire(obj, include=None, exclude=None):
     """Wrap a Python object as an HTTP service and run that service.
 
     Args:
@@ -18,7 +18,7 @@ def Wildfire(obj, include=None):
     return api
 
 
-def _create_api(obj, include=None):
+def _create_api(obj, include=None, exclude=None):
     """Create a Falcon API with routes for the object's methods.
 
     Args:
@@ -47,7 +47,7 @@ def _create_api(obj, include=None):
     return api
 
 
-def get_methods_from_object(obj, include=None):
+def get_methods_from_object(obj, include=None, exclude=None):
     """Get all methods of an object.
 
     Args:
@@ -61,6 +61,9 @@ def get_methods_from_object(obj, include=None):
     # Filter out not included methods.
     if include:
         method_names = [mn for mn in method_names if mn in include]
+    # Filter out not included methods.
+    if exclude:
+        method_names = [mn for mn in method_names if mn not in exclude]
     # Get all methods, excluding those starting with '_' or '__'.
     methods = [getattr(obj, mn) for mn in method_names
                if not mn.startswith('_')]
