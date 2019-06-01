@@ -3,10 +3,6 @@ from setuptools import setup
 
 VERSION = '0.12'
 
-requirements = [
-    'falcon==1.4.1',
-    'gunicorn==19.9.0'
-]
 
 setup(
     name='wildfire',
@@ -17,7 +13,8 @@ setup(
     author_email='florian.joh.schaefer@gmail.com',
     license='Apache Software License',
     packages=['wildfire'],
-    install_requires=requirements,
+    install_requires=[line for line
+                      in open('requirements.txt', 'r').readlines() if line],
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
