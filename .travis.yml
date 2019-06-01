@@ -1,6 +1,13 @@
 language: python
-python:
-  - "3.6"
+matrix:
+  include:
+    - python: 3.5
+    - python: 3.6
+    - python: 3.7
+      dist: xenial
+      sudo: true
+before_install:
+  - pip install --upgrade setuptools pip
 install:
   - pip install -e .
   - pip install -r requirements-test.txt
@@ -19,3 +26,4 @@ deploy:
     secure: "P5aHFzPStE4bDRl2/0Ejo21y2vGFY3rGV+3uXkpErD62XhCwAV8RzEdobYcTj7cdbczBP+KJ8hjeG6JUvm6RmiQama68Hns/uZdvztJpcF6wnmLE6sc0tO3pQmckMZmFfIZ/2qSenfq3cXo81FYO3ERT0cCyvWTfq9GkAnpU8ta9UUQc6nA7noPyQgDJuPXNwKKDtKE14c9ynWKQYVFHbJDo5GZ5E1rynfS9eQqBv+UZZFrEz5BJ01hPrNHnMjQySEFqZ5lENeVsLuI05PN0nlG9zAva5IumrGMiJuHdVq7npqlihSJdH212cIBPpPxUb/tZU8uburBTCjsUf207GvgjrlAvzu9Y9EhMxfImfLHWbiqZtcTR5vpXbso9YUIGYkDjVSL5/G/djHf1+tqi7PloQ65U6YQ/0QKjvcZslHNDu4PdcaPYnIljapyY11ohBUAyHROtornDGlSod+50ZyIvobt+pHzu1EPDbOu7tYUVXrEVmQ2i1vbAS6rvoSuL/9TB67JRkh5jnDEUf8ngWr4f6z76FUrxgcINSpqB15Lt3Vjc2P4FPz8KP3OYIGzbNmPq4VHJEVWzP+9rATQlYANqAxjDeuYj6OtwvqAVyClHqLkvx6WndsIgA5kTXs8lbRvLXyzuAWnkcoSgWNrMBFMR173LhThyqoLk+ZdfL2U="
   on:
     tags: true
+  skip_existing: true
