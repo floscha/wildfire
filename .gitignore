@@ -13,3 +13,5 @@ dist/
 
 venv/
 .env/
+
+.idea
