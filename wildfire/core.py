@@ -111,7 +111,7 @@ def build_resource_from_method(method):
     class MethodResource:
         def on_post(self, req, resp):
             # Extract fields from JSON request.
-            json_args = json.load(req.stream)
+            json_args = json.loads(req.stream.read() or '{}')
 
             # Check if the JSON payload contains all arguments of the function.
             # If not, exit with 422 (Unprocessable Entity) response.
