@@ -6,7 +6,6 @@ from _test_utils import Calculator
 
 
 class FalconTest(testing.TestCase):
-
     def test_root_resource(self):
         self.app = wildfire.core._create_api(None)
 
@@ -39,8 +38,13 @@ class FalconTest(testing.TestCase):
         def test_method():
             pass
         expected_code = falcon.HTTP_200
+        test_env = testing.create_environ()
+        request = falcon.Request(test_env)
         response = falcon.Response()
+        # response.status is 200 by default so set it to something else
+        response.status = None
 
         resource = wildfire.core.build_resource_from_method(test_method)
+        resource.on_post(request, response)
 
         self.assertEqual(expected_code, response.status)
