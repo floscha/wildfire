@@ -30,7 +30,7 @@ def _create_api(obj, include=None, exclude=None):
     # Add route for URI root.
     add_root_resource(api)
 
-    # Check wether the object is a function or a class type.
+    # Check whether the object is a function or a class type.
     if isinstance(obj, FunctionType):
         # If the object is a function, its route can be created right away.
         add_method_route_to_api(obj, api)
