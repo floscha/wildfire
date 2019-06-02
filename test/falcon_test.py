@@ -23,7 +23,6 @@ class FalconTest(testing.TestCase):
 
         self.assertIs(4, json_response)
 
-
     def test_add_method_route_to_api(self):
         def test_method():
             pass
@@ -35,7 +34,6 @@ class FalconTest(testing.TestCase):
 
         api_uris = [route.uri_template for route in api._router._roots]
         self.assertIn(exptected_uri, api_uris)
-
 
     def test_resource_returns_200_code(self):
         def test_method():

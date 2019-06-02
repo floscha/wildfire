@@ -15,7 +15,6 @@ class CoreTest(unittest.TestCase):
 
         self.assertListEqual(['double', 'half'], method_names)
 
-
     def test_included_method_names_from_object(self):
         included_method_names = ['double']
         methods = wildfire.core.get_methods_from_object(
@@ -26,7 +25,6 @@ class CoreTest(unittest.TestCase):
 
         self.assertListEqual(['double'], method_names)
 
-
     def test_excluded_method_names_from_object(self):
         excluded_method_names = ['double']
         methods = wildfire.core.get_methods_from_object(
@@ -36,7 +34,6 @@ class CoreTest(unittest.TestCase):
         method_names = [m.__name__ for m in methods]
 
         self.assertListEqual(['half'], method_names)
-
 
     def test_build_partial_method(self):
         def test_method(self): pass
